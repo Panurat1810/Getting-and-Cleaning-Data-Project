@@ -1,0 +1,152 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Codebook},
+  pdfauthor={me},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Codebook}
+\author{me}
+\date{2023-07-07}
+
+\begin{document}
+\maketitle
+
+The run\_analysis.R script performs the data preparation and then
+followed by the 5 steps required as described in the course project's
+definition.
+
+\hypertarget{download-the-dataset}{%
+\subsubsection{1.Download the dataset}\label{download-the-dataset}}
+
+Dataset downloaded and extracted under the folder called UCI HAR Dataset
+
+\hypertarget{assign-each-data-to-variables}{%
+\subsubsection{2.Assign each data to
+variables}\label{assign-each-data-to-variables}}
+
+features \textless- features.txt : 561 rows, 2 columns\\
+activities \textless- activity\_labels.txt : 6 rows, 2 columns~
+subject\_test \textless- test/subject\_test.txt : 2947 rows, 1 column\\
+x\_test \textless- test/X\_test.txt :2947 rows, 561 columns\\
+y\_test \textless- test/y\_test.txt : 2947 rows, 1 columns\\
+subject\_train \textless- test/subject\_train.txt : 7352 rows, 1
+column\\
+x\_train\textless- test/X\_train.txt : 7352 rows, 561 columns~ y\_train
+\textless- test/y\_train.txt : 7352 rows, 1 columns\\
+
+\hypertarget{merges-the-training-and-the-test-sets-to-create-one-data-set}{%
+\subsubsection{3.Merges the training and the test sets to create one
+data
+set}\label{merges-the-training-and-the-test-sets-to-create-one-data-set}}
+
+X (10299 rows, 561 columns) is created by merging x\_train and x\_test
+using rbind() function\\
+Y (10299 rows, 1 column) is created by merging y\_train and y\_test
+using rbind() function\\
+Subject (10299 rows, 1 column) is created by merging subject\_train and
+subject\_test using rbind() function\\
+Merged\_Data (10299 rows, 563 column) is created by merging Subject, Y
+and X using cbind() function\\
+
+\hypertarget{extracts-only-the-measurements-on-the-mean-and-standard-deviation-for-each-measurement}{%
+\subsubsection{4.Extracts only the measurements on the mean and standard
+deviation for each
+measurement}\label{extracts-only-the-measurements-on-the-mean-and-standard-deviation-for-each-measurement}}
+
+TidyData (10299 rows, 88 columns) is created by subsetting Merged\_Data,
+selecting only columns: subject, code and the measurements on the mean
+and standard deviation (std) for each measurement
+
+\hypertarget{uses-descriptive-activity-names-to-name-the-activities-in-the-data-set}{%
+\subsubsection{5.Uses descriptive activity names to name the activities
+in the data
+set}\label{uses-descriptive-activity-names-to-name-the-activities-in-the-data-set}}
+
+Entire numbers in code column of the TidyData replaced with
+corresponding activity taken from second column of the activities
+variable
+
+\hypertarget{appropriately-labels-the-data-set-with-descriptive-variable-names}{%
+\subsubsection{6.Appropriately labels the data set with descriptive
+variable
+names}\label{appropriately-labels-the-data-set-with-descriptive-variable-names}}
+
+code column in TidyData renamed into activities\\
+All Acc in column's name replaced by Accelerometer\\
+All Gyro in column's name replaced by Gyroscope\\
+All BodyBody in column's name replaced by Body\\
+All Mag in column's name replaced by Magnitude\\
+All start with character f in column's name replaced by Frequency\\
+All start with character t in column's name replaced by Time\\
+
+\hypertarget{from-the-data-set-in-step-4-creates-a-second-independent-tidy-data-set-with-the-average-of-each-variable-for-each-activity-and-each-subject}{%
+\subsubsection{7.From the data set in step 4, creates a second,
+independent tidy data set with the average of each variable for each
+activity and each
+subject}\label{from-the-data-set-in-step-4-creates-a-second-independent-tidy-data-set-with-the-average-of-each-variable-for-each-activity-and-each-subject}}
+
+final\_data (180 rows, 88 columns) is created by sumarizing TidyData
+taking the means of each variable for each activity and each subject,
+after groupped by subject and activity. Export final\_data into
+FinalData.txt file.
+
+\end{document}
